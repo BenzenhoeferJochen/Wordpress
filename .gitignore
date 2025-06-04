@@ -408,6 +408,9 @@ FodyWeavers.xsd
 # AWS Credentials File
 *credentials
 
+# Key File
+*.pem
+
 #Terraform
 # Local .terraform directories
 .terraform/
