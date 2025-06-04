@@ -12,3 +12,7 @@ provider "aws" {
   region                   = "us-west-1"
   shared_credentials_files = ["credentials"]
 }
+
+data "http" "myip" {
+  url = "https://ipinfo.io/ip"
+}
