@@ -45,3 +45,17 @@ resource "aws_vpc_security_group_ingress_rule" "DB_Rule" {
   to_port           = 3306
   cidr_ipv4         = "${data.http.myip.response_body}/32"
 }
+
+# Create a Outgress Security Group
+resource "aws_security_group" "Out_Security_Group" {
+  description = "Allows all outgress traffic"
+  name        = "Out_Security_Group"
+  vpc_id      = aws_vpc.Wordpress_VPC.id
+}
+
+# Allow all outgress 
+resource "aws_vpc_security_group_egress_rule" "Out_Rule" {
+  security_group_id = aws_security_group.Out_Security_Group.id
+  ip_protocol       = -1
+  cidr_ipv4         = "0.0.0.0/0"
+}
