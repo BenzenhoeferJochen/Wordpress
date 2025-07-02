@@ -23,5 +23,5 @@ resource "aws_instance" "Wordpress_Server" {
   subnet_id                   = aws_subnet.Public_Subnet.id
   associate_public_ip_address = true
   key_name                    = data.aws_key_pair.keypair.key_name
-  user_data                   = file("user_data.sh")
+  user_data                   = templatefile("user_data.sh", {db_address = aws_db_instance.Wordpress_DB.endpoint, db_password = var.DB_PASSWORD})
 }

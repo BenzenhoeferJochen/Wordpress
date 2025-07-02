@@ -39,11 +39,11 @@ resource "aws_security_group" "DB_Security_Group" {
 
 # Allow DB ingress
 resource "aws_vpc_security_group_ingress_rule" "DB_Rule" {
-  security_group_id = aws_security_group.DB_Security_Group.id
-  ip_protocol       = "tcp"
-  from_port         = 3306
-  to_port           = 3306
-  cidr_ipv4         = "${data.http.myip.response_body}/32"
+  security_group_id            = aws_security_group.DB_Security_Group.id
+  ip_protocol                  = "tcp"
+  from_port                    = 3306
+  to_port                      = 3306
+  referenced_security_group_id = aws_security_group.SSH_Security_Group.id
 }
 
 # Create a Outgress Security Group
