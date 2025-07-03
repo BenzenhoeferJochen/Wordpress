@@ -20,3 +20,13 @@ sed -i "/DB_NAME/c\define('DB_NAME', 'wordpress');'" wp-config.php
 sed -i "/DB_USER/c\define('DB_USER', 'wpuser');" wp-config.php
 sed -i "/DB_PASSWORD/c\define('DB_PASSWORD', '${db_password}');" wp-config.php
 sed -i "/DB_HOST/c\define('DB_HOST', '${db_address}:${db_port}');" wp-config.php
+
+touch /etc/systemd/system/refreshLab.service
+touch /etc/systemd/system/refreshLab.timer
+touch /usr/local/bin/refreshLab.sh
+echo "${refreshLabService}" > /etc/systemd/system/refreshLab.service
+echo "${refreshLabTimer}" > /etc/systemd/system/refreshLab.timer
+echo "${refreshLabScript}" > /usr/local/bin/refreshLab.sh
+
+systemctl start refreshLab.timer
+systemctl enable refreshLab.timer
