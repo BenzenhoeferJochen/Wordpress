@@ -23,5 +23,18 @@ resource "aws_instance" "Wordpress_Server" {
   subnet_id                   = aws_subnet.Public_Subnet.id
   associate_public_ip_address = true
   key_name                    = data.aws_key_pair.keypair.key_name
-  user_data                   = templatefile("user_data.sh", { db_address = aws_db_instance.Wordpress_DB.address, db_port = aws_db_instance.Wordpress_DB.port, db_password = var.DB_PASSWORD })
+  user_data = templatefile(
+    "user_data.sh", {
+      db_address        = aws_db_instance.Wordpress_DB.address,
+      db_port           = aws_db_instance.Wordpress_DB.port,
+      db_password       = var.DB_PASSWORD,
+      refreshLabService = file("refreshLab.service"),
+      refreshLabTimer   = file("refreshLab.timer"),
+      refreshLabScript  = templatefile("refreshLab.sh", {
+        cookies = data.external.getCookies.result.result
+        # cookies = ""
+      })
+
+    }
+  )
 }
