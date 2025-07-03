@@ -11,3 +11,7 @@ terraform init
 terraform plan
 terraform apply
 ```
+
+## Use the Lab Refresh Script
+
+The Script will only work correctly if the Lab was opened in Firefox
