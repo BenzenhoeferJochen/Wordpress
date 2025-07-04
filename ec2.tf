@@ -17,9 +17,13 @@ data "aws_key_pair" "keypair" {
 
 # Create a EC2 Instance with Wordpress
 resource "aws_instance" "Wordpress_Server" {
-  ami                         = data.aws_ssm_parameter.AL2023AMISSM.value
-  instance_type               = "t2.micro"
-  security_groups             = [aws_security_group.SSH_Security_Group.id, aws_security_group.HTTP_Security_Group.id, aws_security_group.DB_Security_Group.id, aws_security_group.Out_Security_Group.id]
+  ami           = data.aws_ssm_parameter.AL2023AMISSM.value
+  instance_type = "t2.micro"
+  security_groups = [
+    aws_security_group.SSH_Security_Group.id,
+    aws_security_group.HTTP_Security_Group.id,
+    aws_security_group.Out_Security_Group.id
+  ]
   subnet_id                   = aws_subnet.Public_Subnet1.id
   associate_public_ip_address = true
   key_name                    = data.aws_key_pair.keypair.key_name
@@ -30,11 +34,15 @@ resource "aws_instance" "Wordpress_Server" {
       db_password       = var.DB_PASSWORD,
       refreshLabService = file("refreshLab.service"),
       refreshLabTimer   = file("refreshLab.timer"),
-      refreshLabScript  = templatefile("refreshLab.sh", {
+      refreshLabScript = templatefile("refreshLab.sh", {
         cookies = data.external.getCookies.result.result
         # cookies = ""
       })
 
     }
   )
+}
+
+output "EC2_Instance_Public_IP" {
+  value = aws_instance.Wordpress_Server.public_ip
 }
