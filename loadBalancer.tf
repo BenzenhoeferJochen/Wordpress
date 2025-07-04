@@ -49,3 +49,8 @@ resource "aws_lb_listener" "front_end" {
     target_group_arn = aws_lb_target_group.app_tg.arn
   }
 }
+
+# Output the Load Balancer DNS name
+output "Load_Balancer_DNS" {
+  value = aws_lb.app_lb.dns_name
+}
