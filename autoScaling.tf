@@ -17,7 +17,6 @@ resource "aws_launch_template" "wordpress_launch_template" {
     security_groups = [
       aws_security_group.SSH_Security_Group.id,
       aws_security_group.HTTP_Security_Group.id,
-      aws_security_group.DB_Security_Group.id,
       aws_security_group.Out_Security_Group.id
     ]
   }
