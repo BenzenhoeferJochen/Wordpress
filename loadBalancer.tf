@@ -5,7 +5,7 @@ resource "aws_lb" "app_lb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.HTTP_Security_Group.id, aws_security_group.Out_Security_Group.id]
-  subnets            = aws_db_subnet_group.wordpress_db_subnet_group.subnet_ids
+  subnets            = [aws_subnet.Public_Subnet1.id, aws_subnet.Public_Subnet2.id]
 
   tags = {
     Name = "app-lb"
@@ -29,7 +29,7 @@ resource "aws_lb_target_group" "app_tg" {
     enabled             = true
     healthy_threshold   = 2
     interval            = 30
-    matcher             = "200"
+    matcher             = "200,302"
     path                = "/"
     port                = "traffic-port"
     protocol            = "HTTP"
