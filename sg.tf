@@ -14,6 +14,15 @@ resource "aws_vpc_security_group_ingress_rule" "SSH_Rule" {
   cidr_ipv4         = "${data.http.myip.response_body}/32"
 }
 
+# Allow SSH ingress
+resource "aws_vpc_security_group_ingress_rule" "SSH_Rule2" {
+  security_group_id = aws_security_group.SSH_Security_Group.id
+  ip_protocol       = "tcp"
+  from_port         = 22
+  to_port           = 22
+  referenced_security_group_id = aws_security_group.SSH_Security_Group.id
+}
+
 # Create a WS Security Group
 resource "aws_security_group" "HTTP_Security_Group" {
   description = "Allows HTTP Access for everyone"
